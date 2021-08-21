@@ -61,7 +61,7 @@
 			{{ render_box("Description", active.description, "description") }}
 			{{ render_box("Trigger phrase", active.trigger_phrase, "trigger_phrase") }}
 			{{ render_box("Code", active.code, "code") }}
-			<div class="control" id="update-button" onclick="updateClick({{ active.id }})">
+			<div class="control" id="update-button" onclick="updateClick( {{ active.id }} )">
 				<a class="button is-info">
 					Submit
 				</a>
