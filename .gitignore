@@ -1,0 +1,6 @@
+**/__pycache__/
+**/.idea
+**/.vscode
+application/site.db
+venv/
+application/settings_secrets.py
