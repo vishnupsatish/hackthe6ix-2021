@@ -1,0 +1,10 @@
+.chat-user-container {
+	padding: 5px;
+	border: 1px black solid;
+}
+
+.add-chat-container {
+	display: flex;
+	justify-content: space-between;
+	align-items: center;
+}

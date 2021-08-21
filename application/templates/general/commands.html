@@ -1,0 +1,78 @@
+{% extends "templates/dashboard-template.html" %}
+{% from "chat/_helper.html" import render_field %}
+{% from "chat/_boxdisplay.html" import render_box %}
+
+{% block new_head %}
+<link rel="stylesheet" href="{{ url_for('static', filename='css/_helper.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/_boxdisplay.css') }}">
+<link rel="stylesheet" href="{{ url_for('static', filename='css/commands.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<style type="text/css" media="screen">
+	#editor { 
+			position: absolute;
+			top: 0;
+			right: 0;
+			bottom: 0;
+			left: 0;
+	}
+</style>
+
+<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
+<script>
+    var editor = ace.edit("editor");
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/javascript");
+</script>
+
+<div>
+	<div class="mb-4">
+		{% if not active %}
+		<div class="is-clickable" onclick="changeModalDisplay()">
+			<i class="fas fa-plus"></i>
+			ADD COMMAND
+		</div>
+		{% endif %}
+
+		<form id="command-panel" class="command-panel" method="POST" action="/commands">
+			<input name="title" placeholder="Command title" />
+			<input name="description" placeholder="Command description" />
+			<input name="trigger_phrase" placeholder="Command trigger phrase" />
+
+			<div id="editor" name="code" placeholder="Code"></div>
+			<!-- <textarea name="code" placeholder="Code" rows=10></textarea> -->
+			<button class="button is-info" type="submit">Add</button>
+		</form>
+	</div>
+
+	<div class="columns">
+		<div class="column {% if active %}is-3{% else %}is-12{% endif %}">
+			<div>
+				{% for command in commands %}
+				{{ render_field(command.title, active and active.title == command.title, 'commands', 'command',
+				command.title) }}
+				{% endfor %}
+			</div>
+		</div>
+
+		<div class="column">
+			{{ render_box("Description", active.description, "description") }}
+			{{ render_box("Trigger phrase", active.trigger_phrase, "trigger_phrase") }}
+			{{ render_box("Code", active.code, "code") }}
+			<div class="control" id="update-button" onclick="updateClick({{ active.id }})">
+				<a class="button is-info">
+					Submit
+				</a>
+			</div>
+		</div>
+	</div>
+
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="{{ url_for('static', filename='js/commands.js') }}"></script>
+{% endblock %}

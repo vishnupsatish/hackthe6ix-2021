@@ -1,0 +1,6 @@
+{% macro render_box(title, content, id_value) %}
+<div class="box">
+	<h2 class="box-display-title">{{ title }}</h2>
+	<p id="{{ id_value }}" class="box-display-content" contenteditable="true">{{ content }}</p>
+</div>
+{% endmacro %}

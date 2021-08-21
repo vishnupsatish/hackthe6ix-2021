@@ -1,0 +1,91 @@
+{% extends "templates/dashboard-template.html" %}
+
+{% block new_head %}
+
+<!-- CSS only -->
+<!-- <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.0/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-KyZXEAg3QhqLMpG8r+8fhAXLRk2vvoC2f3B09zVXn8CA5QIVfZOJ3BCsw2P0p/We" crossorigin="anonymous"> -->
+
+<link rel="stylesheet" href="{{ url_for('static', filename='css/dashboard.css') }}">
+
+{% endblock %}
+
+{% block content %}
+
+<div id="logout">
+  <a class="title is-4" href="{{ url_for('logout') }}"> Logout </a>
+</div>
+
+<div class="columns">
+  <div class="column is-4">
+    <div class="box has-text-centered">
+      <img id="profile-picture1"
+        src="https://res.cloudinary.com/hackthe6ixproject/image/upload/{{ current_user.profile_picture }}"
+        alt="Profile Picture">
+      <h5 class="title is-5" style="padding-top: 10px;"> {{ current_user.username }}</h3>
+        <form action="{{  url_for('upload')  }}" method="post" enctype="multipart/form-data">
+          <div class="columns is-centered" style="padding-bottom: 20px; padding-top: 10px;">
+            <label class="file-label is-centered">
+              <input class="file-input" type="file" name="file" accept="image/png, image/jpeg">
+              <span class="file-cta is-centered">
+                <span class="file-icon">
+                  <i class="fas fa-upload"></i>
+                </span>
+                <span class="file-label">
+                  Choose a file
+                </span>
+              </span>
+              <input id="tmp-button" value="Upload" class="button" type="submit" value="Submit">
+            </label>
+          </div>
+        </form>
+    </div>
+  </div>
+
+
+
+
+  <div id="box-one" class="column is-4" style="margin-top: mt-1">
+    <div class="box has-text-centered">
+      <div class="flex-row-between">
+        <h5 id="first-box" class="title is-5"><b>Username:</b></h5>
+        <h5 id="second-box" class="title is-5"><b> {{ current_user.username }} </b></h5>
+      </div>
+      <hr class="rounded">
+      <div class="flex-row-between">
+        <h5 id="first-box" class="title is-5"><b>Email:</b></h5>
+        <h5 id="second-box" class="title is-5"><b> {{ current_user.email }} </b></h5>
+      </div>
+      <hr class="rounded">
+    </div>
+  </div>
+</div>
+
+
+
+<div class="tile is-ancestor">
+  <div class="tile is-4 is-vertical is-parent">
+    <div class="tile is-child box">
+      <p class="title">About Dyna</p>
+      <p>
+        Dyna allows you to chat with your friends while creating your own custom commands that are executable over the cloud! Put your code to the test and test out various commands including finding the weather, performing internet searches and so many more!
+      </p>
+    </div>
+    <div class="tile is-child box">
+      <p class="title">Friends</p>
+      <p>Invite your friends to Dyna today, and you can use your commands all while chatting away! Simply share ask your friend for their username, add them in the Chat bar and that's it! All in a few clicks.</p>
+    </div>
+  </div>
+  <div class="tile is-parent">
+    <div class="tile is-child box">
+      <p class="title">Basics</p>
+      <p style="padding:10px">Start by going over to the commands tab and adding your first command. Use any of our multiple supported languages including C++, Python and Java. You can start with a 
+        command of any difficulty, even with a simple Hello, World! To set up a command, set a trigger phrase that will start the execution of your command when it is sent. Then add your code that will be executed
+        as your command runs. Your code can be as simple as a print statement or it can even incorporate hard concepts like AI and Machine Learning!
+      </p>
+      <p style="padding:10px">Once you have your command set up, test it out by going into a chat with our bot or with a friend. You can then type in your keyword and watch your command be executed!</p>
+      <p style="padding:10px">Finally, have fun setting more commands of different difficulties! Send any feedback or suggestions to hackthe6ix.project@gmail.com and we'll be glad to hear them!</p>
+    </div>
+  </div>
+</div>
+
+{% endblock %}

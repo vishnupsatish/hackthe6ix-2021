@@ -1,0 +1,8 @@
+.command-panel {
+	display: none;
+}
+#command-panel > input, #command-panel > textarea {
+	padding: 5px;
+	margin: 5px 0;
+	border: 1px solid black;
+}

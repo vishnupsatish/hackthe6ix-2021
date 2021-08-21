@@ -6,8 +6,8 @@ from application.models.general import User
 
 # The registration form
 class RegistrationForm(FlaskForm):
-    name = StringField('Name', validators=[DataRequired()], render_kw={'placeholder': 'Name'})
     email = StringField('Email', validators=[DataRequired(), Email()], render_kw={'placeholder': 'Email'})
+    username = StringField('Username', validators=[DataRequired()], render_kw={'placeholder': 'Username'})
     password = PasswordField('Password', validators=[DataRequired()], render_kw={'placeholder': 'Password'})
     confirm_password = PasswordField('Confirm Password', validators=[DataRequired(), EqualTo('password')],
                                      render_kw={'placeholder': 'Confirm Password'})

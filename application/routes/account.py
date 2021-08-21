@@ -1,12 +1,18 @@
 from functools import wraps
 from hashlib import sha256
+import random
 from flask import render_template, url_for, flash, redirect, request, abort
 from flask_login import login_user, current_user, logout_user, login_required
-from application import app, bcrypt, serializer, mail
+from flask_admin.contrib.sqla import ModelView
+from application import app, bcrypt, serializer, mail, admin
 from application.models.general import *
 from application.forms.general import *
 from application.settings_secrets import *
 
+admin.add_view(ModelView(User, db.session))
+admin.add_view(ModelView(Message, db.session))
+admin.add_view(ModelView(Command, db.session))
+admin.add_view(ModelView(Chat, db.session))
 
 # Create a decorator function
 def abort_not_confirmed(f):
@@ -42,7 +48,7 @@ def logout():
         abort(404)
 
     logout_user()
-    return redirect(url_for('home'))
+    return redirect(url_for('dashboard'))
 
 
 # Registration page
@@ -50,7 +56,7 @@ def logout():
 def register():
     # If the user is already logged in, redirect to the dashboard
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('dashboard'))
 
     # Create form using Flask-WTF
     form = RegistrationForm()
@@ -59,7 +65,7 @@ def register():
     if form.validate_on_submit():
         hashed_password = bcrypt.generate_password_hash(
             form.password.data).decode('utf-8')
-        user = User(name=form.name.data, email=form.email.data,
+        user = User(username=form.username.data, email=form.email.data,
                     password=hashed_password)
         db.session.add(user)
         db.session.commit()
@@ -81,7 +87,7 @@ def register():
 def login():
     # If the user is already logged in, redirect to the dashboard
     if current_user.is_authenticated:
-        return redirect(url_for('home'))
+        return redirect(url_for('dashboard'))
 
     # Create form using Flask-WTF
     form = LoginForm()
@@ -95,7 +101,7 @@ def login():
 
             # Log the user in and redirect to the dashboard if there is not "?next=" parameter in the URL
             login_user(user, remember=form.remember.data)
-            return redirect(url_for('home')) if not request.args.get('next') else redirect(
+            return redirect(url_for('dashboard')) if not request.args.get('next') else redirect(
                 request.args.get('next'))
 
         # Flash that the login was unsuccessful (Flash is an in-built
@@ -166,7 +172,7 @@ def confirm_account():
         abort(404)
 
     if current_user.confirm:
-        return redirect(url_for('home'))
+        return redirect(url_for('dashboard'))
 
     # Create the form which allows resending confirmation emails
     form = ConfirmAccountForm()
@@ -218,7 +224,7 @@ def token(token):
 
         # Let the user know they have been confirmed
         flash('Your email has been confirmed.', 'success')
-        return redirect(url_for('home'))
+        return redirect(url_for('dashboard'))
 
     # If there was an error while loading the token, return so
     except:

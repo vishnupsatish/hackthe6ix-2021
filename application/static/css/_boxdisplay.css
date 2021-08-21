@@ -1,0 +1,8 @@
+.box-display-title {
+	font-size: 3.5vmin;
+}
+.box-display-content {
+	border-width: 0;
+	font-size: 2vmin; 
+	width: 100%;
+}

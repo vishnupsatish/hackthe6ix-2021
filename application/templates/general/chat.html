@@ -1,0 +1,31 @@
+{% extends "templates/dashboard-template.html" %}
+{% from "chat/_helper.html" import render_field %}
+
+{% block new_head %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/_helper.css') }}">
+{% endblock %}
+
+{% block content %}
+
+<div>
+	<!-- People -->
+		<!-- Add a chat  -->
+        <div>
+		<div>
+			{% for chat in chats %}
+
+			{{ render_field(chat.room_name, active, 'chat_person', 'room', chat.room_name) }}
+
+			{% endfor %}
+		</div>
+    </div>
+
+        <!-- Actual chats  -->
+</div>
+
+{% endblock %}
+
+{% block script %}
+	<script src="{{ url_for('static', filename='js/chat.js') }}"></script>
+{% endblock %}

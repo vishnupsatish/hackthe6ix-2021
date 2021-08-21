@@ -1,0 +1,121 @@
+{% extends "templates/dashboard-template.html" %}
+{% from "chat/_helper.html" import render_field %}
+
+{% block new_head %}
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/chat.css') }}">
+	<link rel="stylesheet" href="{{ url_for('static', filename='css/_helper.css') }}">
+
+    <style>
+
+    </style>
+{% endblock %}
+
+{% block content %}
+
+<div>
+	<!-- People -->
+	<div class="columns">
+		<!-- Add a chat  -->
+        <div class="column is-3">
+		<div>
+
+      {% for chat in chats %}
+
+			{{ render_field(chat.room_name, chat.room_name == active, 'chat_person', 'room', chat.room_name) }}
+
+			{% endfor %}
+		</div>
+    </div>
+
+        <!-- Actual chats  -->
+	    <div class="column">
+            <div class="box" style="height: 85vh; display: flex; flex-direction: column; justify-content: flex-end;">
+
+                <div id="messages-chat" style="overflow-y: scroll; overflow-x:hidden;">
+
+                  {% for message in chat.messages %}
+                  <div class="columns">
+                    <div class="column is-1">
+                      <img style="aspect-ratio: 1/1; border-radius: 50%; object-fit: cover; width: 100%;" src="https://res.cloudinary.com/hackthe6ixproject/image/upload/{{ message.user.profile_picture }}" alt="">
+                    </div>
+
+                    <div class="column">
+                  <p class="mt-3"><b>{{ message.user.username }}</b></p>
+                  <p class="mb-3">{{ message.message_rendered }}</p>
+                </div>
+                </div>
+                  {% endfor %}
+ 
+              </div>
+
+                <div class="field has-addons">
+                    <div class="control is-expanded">
+                      <input onkeypress="enter_press(event)" id="msg-val" class="input" type="text" placeholder="Write something!">
+                    </div>
+                    <div class="control">
+                      <button class="button is-info" onclick="msg_sent()">
+                        Send
+                      </button>
+                    </div>
+                  </div>
+              </div>
+        </div>
+	</div>
+	
+</div>
+
+{% endblock %}
+
+{% block script %}
+<script src="https://cdnjs.cloudflare.com/ajax/libs/socket.io/4.0.1/socket.io.js" integrity="sha512-q/dWJ3kcmjBLU4Qc47E4A9kTB4m3wuTY7vkFJDTZKjTs8jhyGQnaUrxa0Ytd0ssMZhbNua9hE+E7Qv1j+DyZwA==" crossorigin="anonymous"></script>
+
+<script>
+
+  var socket;
+  $(document).ready(function(){
+    document.getElementById('messages-chat').scrollTop = document.getElementById('messages-chat').scrollHeight;
+    socket = io.connect('http://localhost:5000/chat');
+    socket.on('connect', function() {
+      socket.emit('joined', {});
+    });
+    
+    socket.on('message', function(data) {
+      document.getElementById('messages-chat').insertAdjacentHTML('beforeend', `
+      <div class="columns">
+        <div class="column is-1">
+          <img style="aspect-ratio: 1/1; border-radius: 50%; object-fit: cover; width: 100%;" src="https://res.cloudinary.com/hackthe6ixproject/image/upload/${data.pfp}" alt="">
+        </div>
+
+        <div class="column">
+      <p class="mt-3"><b>${data.user}</b></p>
+      <p class="mb-3">${data.msg}</p>
+    </div>
+    </div>
+      `)
+      document.getElementById('messages-chat').scrollTop = document.getElementById('messages-chat').scrollHeight;
+    });
+
+  });
+
+  function msg_sent() {
+    const txt = document.getElementById('msg-val').value;
+    if (txt === '') return;
+    console.log(txt)
+    socket.emit('text', {message: txt});
+    document.getElementById('msg-val').value = '';
+  }
+  
+  function enter_press(e) {
+    var code = (e.keyCode ? e.keyCode : e.which);
+      if(code == 13) { //Enter keycode
+        msg_sent();
+}
+
+  }
+  
+
+</script>
+
+
+{% endblock %}
+

@@ -4,6 +4,8 @@ from flask_sqlalchemy import SQLAlchemy
 from flask_bcrypt import Bcrypt
 from flask_login import LoginManager
 from flask_mail import Mail
+from flask_admin import Admin
+from flask_socketio import SocketIO, emit
 from itsdangerous import URLSafeTimedSerializer
 from application.settings_secrets import *
 
@@ -13,13 +15,14 @@ app.config['SECRET_KEY'] = SECRET_KEY
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
+socketio = SocketIO(app)
+admin = Admin(app, template_mode='bootstrap3')
 login_manager = LoginManager(app)
 login_manager.login_view = 'login'
 login_manager.login_message_category = 'info'
 login_manager.login_message = 'You must be logged in to view that page.'
 
 serializer = URLSafeTimedSerializer(SECRET_KEY)
-
 
 # Initialize Flask-Mail, used for sending confirmation emails
 app.config['MAIL_SERVER'] = 'smtp.gmail.com'
@@ -32,5 +35,6 @@ app.config['MAIL_DEBUG'] = True
 mail = Mail(app)
 
 
+
 # Import each route from all initializations have been finished
-from application.routes import account, errors, general
+from application.routes import account, errors, general, events

@@ -1,0 +1,57 @@
+{% extends "templates/bulma-template.html" %}
+
+{% block head %}
+
+    <style>
+        html {
+            background-image: linear-gradient(to right, #ebf3fa, #dadff6);
+        }
+    </style>
+
+    {% block new_head %}
+
+    {% endblock %}
+
+{% endblock %}
+
+{% block body %}
+
+    {% include "include/navbar.html" %}
+
+<div class="columns">
+    <div class="column is-1">
+
+        {% include "include/menu.html" %}
+
+    </div>
+    <div class="column">
+        {# Show flashed messages with Bulma's notification class #}
+        {% with messages = get_flashed_messages(with_categories=true) %}
+        {% if messages %}
+            {% for category, message in messages %}
+
+                <div class="notification is-{{ category }}">
+                    {{ message }}
+                </div>
+            {% endfor %}
+        {% endif %}
+        {% endwith %}
+        <section class="section">
+            <div class="container">
+
+
+
+                {% block content %}
+                {% endblock %}
+
+            </div>
+        </section>
+    </div>
+</div>
+
+{% block script %}
+
+{% endblock %}
+
+
+{% endblock %}

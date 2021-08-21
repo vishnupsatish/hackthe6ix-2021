@@ -1,0 +1,8 @@
+{% macro render_field(name, active, redirect, kwarg, link) %}
+
+<div class="box is_clickable {% if active %} active-container {% endif %}"
+    onclick="window.location.href='{{ url_for(redirect, **{ kwarg: link }) }}';">
+    {{ name }}
+</div>
+
+{% endmacro %}

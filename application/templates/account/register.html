@@ -22,15 +22,15 @@
             {{ form.hidden_tag() }}
 
             <div class="field">
-                {% if form.name.errors %}
-                    {{ form.name(class="input is-medium is-danger") }}
+                {% if form.username.errors %}
+                    {{ form.username(class="input is-medium is-danger") }}
                     <div class="invalid-feedback">
-                        {% for error in form.name.errors %}
+                        {% for error in form.username.errors %}
                             <p class="help is-danger">{{ error }}</p>
                         {% endfor %}
                     </div>
                 {% else %}
-                    {{ form.name(class="input is-medium") }}
+                    {{ form.username(class="input is-medium") }}
                 {% endif %}
 
             </div>

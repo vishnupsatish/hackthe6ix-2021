@@ -16,3 +16,82 @@
 .card-hover-effect {
     transition: 0.3s;
 }
+
+
+.sidebar {
+    position: fixed;
+    overflow-y: auto;
+
+    max-height: 100vh;
+    top: 0;
+    bottom: 0;
+    background-color: #323a4d;
+    width: inherit;
+}
+
+
+.sidebar-item:hover {
+    background-color: black !important;
+}
+
+.sidebar-item {
+    margin-bottom: 1.5rem;
+}
+
+.sidebar-item-link {
+    color: inherit;
+    width: 100%;
+
+}
+
+.sidebar-item-icon {
+    font-size: 2vw;
+}
+
+
+@media only screen and (max-width: 768px) {
+    .sidebar {
+        display: none;
+    }
+    .mobile-navbar {
+        display: block;
+        height: 80px;
+        background-color: #323a4d;
+    }
+}
+
+@media only screen and (min-width: 768px) {
+
+    .mobile-navbar {
+        display: none;
+    }
+}
+
+.mobile-navbar {
+    background-color: #323a4d;
+    height: 10vh;
+}
+
+
+.navbar-item:hover {
+    background-color: black !important;
+}
+
+.navbar-item {
+
+    height: 100%;
+    display: flex;
+    justify-content: center; /* align horizontal */
+    align-items: center;
+}
+
+.navbar-item-link {
+    color: inherit;
+    height: 100%;
+    margin-right: 1.5rem;
+    display: inline-block;
+}
+
+.navbar-item-icon {
+    font-size: 4vh;
+}
