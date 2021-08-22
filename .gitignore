@@ -3,5 +3,4 @@
 **/.vscode
 application/site.db
 venv/
-application/settings_secrets.py
 reset_database.py
