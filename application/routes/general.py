@@ -2,6 +2,7 @@ from types import SimpleNamespace
 from flask import render_template, flash, redirect, url_for, jsonify, request, abort, session
 from application import app, db
 import secrets
+import slugify
 from .account import abort_not_confirmed
 import cloudinary
 import cloudinary.uploader
@@ -24,20 +25,36 @@ def dashboard():
     context['userid'] = current_user.username
     context['email'] = current_user.email
     
-    return render_template('general/dashboard.html', context=context)
-
-def generate_person(name):
-    return { 
-        'name': name,
-    }
-
+    return render_template('general/dashboard.html', context=context, page_title='Dashboard')
 
 @app.route('/chat')
 @login_required
 @abort_not_confirmed
 def chat():
-    return render_template('general/chat.html', chats=current_user.chats, active=None)
+    return render_template('general/chat.html', chats=current_user.chats, active=None, page_title='Chat')
 
+@app.route('/add-chat', methods=['POST'])
+@login_required
+@abort_not_confirmed
+def add_chat():
+    try:
+        username = request.form['username']
+    except KeyError:
+        abort('Input data is of an invalid form.', 400)
+        
+    chat_with = User.query.filter_by(username=username).first()
+
+    chat = Chat()
+    chat.users.append(chat_with)
+    chat.users.append(current_user)
+
+    chat.room_name = f'{current_user.username}-{chat_with.username}'
+
+    db.session.add(chat_with)
+    db.session.add(chat)
+    db.session.commit()
+    
+    return redirect('chat')
 
 @app.route('/chat/<string:room>')
 @login_required
@@ -51,7 +68,7 @@ def chat_person(room):
 
     session['room'] = room
 
-    return render_template('general/specific-chat.html', chats=current_user.chats, active=chat.room_name, chat=chat)
+    return render_template('general/specific-chat.html', chats=current_user.chats, active=chat.room_name, chat=chat, page_title='Chat')
 
 
 @app.route('/commands', defaults={'command': None}, methods=['GET', 'POST', 'PATCH'])
@@ -61,9 +78,9 @@ def chat_person(room):
 def commands(command):
     if request.method == "GET":
         commands = Command.query.all()
-        active_command = next(iter([x for x in commands if x.title == command]), None)
+        command = Command.query.filter_by(title=command).first()
         
-        return render_template('general/commands.html', commands=commands, active=active_command)
+        return render_template('general/commands.html', commands=commands, active=command, page_title='Command')
     elif request.method == "PATCH":
         try:
             _id = request.form['id']

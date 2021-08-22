@@ -10,23 +10,6 @@
 
 {% block content %}
 
-<style type="text/css" media="screen">
-	#editor { 
-			position: absolute;
-			top: 0;
-			right: 0;
-			bottom: 0;
-			left: 0;
-	}
-</style>
-
-<script src="/ace-builds/src-noconflict/ace.js" type="text/javascript" charset="utf-8"></script>
-<script>
-    var editor = ace.edit("editor");
-    editor.setTheme("ace/theme/monokai");
-    editor.session.setMode("ace/mode/javascript");
-</script>
-
 <div>
 	<div class="mb-4">
 		{% if not active %}
@@ -41,9 +24,13 @@
 			<input name="description" placeholder="Command description" />
 			<input name="trigger_phrase" placeholder="Command trigger phrase" />
 
-			<div id="editor" name="code" placeholder="Code"></div>
-			<!-- <textarea name="code" placeholder="Code" rows=10></textarea> -->
+			{% if not active %}
+
+			<div style="position: relative; height: 300px;" id="editor"></div>
+			<textarea name="code"></textarea>
 			<button class="button is-info" type="submit">Add</button>
+			<textarea name="code"></textarea>
+			{% endif %}
 		</form>
 	</div>
 
@@ -60,7 +47,7 @@
 		<div class="column">
 			{{ render_box("Description", active.description, "description") }}
 			{{ render_box("Trigger phrase", active.trigger_phrase, "trigger_phrase") }}
-			{{ render_box("Code", active.code, "code") }}
+			<div style="position: relative; height: 300px;" id="editor">{{ active.code }}</div>
 			<div class="control" id="update-button" onclick="updateClick( {{ active.id }} )">
 				<a class="button is-info">
 					Submit
@@ -74,5 +61,21 @@
 {% endblock %}
 
 {% block script %}
+<script src="https://pagecdn.io/lib/ace/1.4.12/ace.min.js" crossorigin="anonymous" integrity="sha256-T5QdmsCQO5z8tBAXMrCZ4f3RX8wVdiA0Fu17FGnU1vU="></script>
 <script src="{{ url_for('static', filename='js/commands.js') }}"></script>
+<script>
+	ace.config.set('basePath', 'path')
+	var editor = ace.edit("editor");
+	
+    editor.setTheme("ace/theme/monokai");
+    editor.session.setMode("ace/mode/python");
+
+	 var textarea = $('textarea[name="code"]').hide();
+	editor.getSession().setValue(textarea.val());
+	editor.getSession().on('change', function(){
+	  textarea.val(editor.getSession().getValue());
+	}); 
+
+
+</script>
 {% endblock %}

@@ -11,7 +11,19 @@
 <div>
 	<!-- People -->
 		<!-- Add a chat  -->
-        <div>
+
+			
+		<form action="/add-chat" method="post" class="mb-5">
+		<div class="field has-addons">
+			<div class="control is-expanded">
+			  <input name="username" class="input" type="text" placeholder="Add a friend!">
+			</div>
+			<div class="control">
+			  <input type="submit" value="Chat" class="button is-info">
+			</div>
+		  </div>
+		</form>
+
 		<div>
 			{% for chat in chats %}
 
