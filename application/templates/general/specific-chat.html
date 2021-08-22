@@ -74,7 +74,7 @@
   var socket;
   $(document).ready(function(){
     document.getElementById('messages-chat').scrollTop = document.getElementById('messages-chat').scrollHeight;
-    socket = io.connect('http://localhost:5000/chat');
+    socket = io.connect('https://dyna-ht6.herokuapp.com/chat');
     socket.on('connect', function() {
       socket.emit('joined', {});
     });
