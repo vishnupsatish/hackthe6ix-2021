@@ -12,7 +12,7 @@ from application.settings_secrets import *
 # Initialize Flask and extensions, such as Flask_SQLAlchemy, Flask_Login, etc.
 app = Flask(__name__)
 app.config['SECRET_KEY'] = SECRET_KEY
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL')
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ.get('DATABASE_URL').replace("://", "ql://", 1)
 db = SQLAlchemy(app)
 bcrypt = Bcrypt(app)
 socketio = SocketIO(app)
