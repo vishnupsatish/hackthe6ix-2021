@@ -1,7 +1,4 @@
 from application import app, socketio
-import eventlet
-
-eventlet.monkey_patch()
 
 # Run the application
 if __name__ == '__main__':
