@@ -6,8 +6,9 @@ cffi==1.14.6
 charset-normalizer==2.0.4
 click==8.0.1
 cloudinary==1.26.0
-dnspython==2.1.0
+dnspython==1.16.0
 email-validator==1.1.3
+eventlet==0.31.1
 Flask==2.0.1
 Flask-Admin==1.5.8
 Flask-Bcrypt==0.7.1
