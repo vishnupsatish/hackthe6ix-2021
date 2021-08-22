@@ -8,7 +8,7 @@ click==8.0.1
 cloudinary==1.26.0
 dnspython==1.16.0
 email-validator==1.1.3
-eventlet==0.31.1
+eventlet==0.30.2
 Flask==2.0.1
 Flask-Admin==1.5.8
 Flask-Bcrypt==0.7.1
